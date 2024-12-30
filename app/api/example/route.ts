@@ -21,10 +21,11 @@ export async function GET() {
       items 
     });
   } catch (e) {
-    console.error('MongoDB connection error:', e);
+    const error = e as Error;
+    console.error('MongoDB connection error:', error);
     return NextResponse.json({ 
       error: 'Failed to fetch data',
-      details: process.env.NODE_ENV === 'development' ? e.message : 'Internal Server Error',
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal Server Error',
       environment: process.env.NODE_ENV
     }, { 
       status: 500 
