@@ -1,5 +1,4 @@
 import clientPromise from '@/utils/mongodb';
-import { ServerApiVersion } from 'mongodb';
 
 export default async function Home() {
   const status = {
@@ -11,15 +10,6 @@ export default async function Home() {
   try {
     // Step 1: Initial connection attempt
     status.steps.push("1. Attempting to connect to MongoDB...");
-    const options = {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
-      tls: true,
-      tlsInsecure: false, // Set to true if you want to bypass certificate validation (not recommended for production)
-    };
     const client = await clientPromise;
     status.steps.push("✅ MongoDB client initialized successfully");
 
