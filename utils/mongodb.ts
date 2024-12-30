@@ -14,12 +14,12 @@ const options = {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
+  tls: true,
+  tlsInsecure: false,
 };
 
 if (process.env.NODE_ENV === 'development') {
-  // In development mode, use a global variable so that the value
-  // is preserved across module reloads caused by HMR (Hot Module Replacement).
   let globalWithMongo = global as typeof globalThis & {
     _mongoClientPromise?: Promise<MongoClient>;
   };
@@ -38,7 +38,6 @@ if (process.env.NODE_ENV === 'development') {
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
-  // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options);
   clientPromise = client.connect()
     .then(client => {
@@ -51,5 +50,4 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 
-// Export a module-scoped MongoClient promise
 export default clientPromise; 
