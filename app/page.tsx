@@ -15,8 +15,9 @@ export default async function Home() {
 
     // Step 2: Get database reference
     status.steps.push("2. Getting database reference...");
-    const db = client.db("your_database_name");
-    status.steps.push("✅ Database reference obtained");
+    const dbName = process.env.MONGODB_DB || "defaultDatabaseName"; // Fallback to a default if not set
+    const db = client.db(dbName);
+    status.steps.push(`✅ Database reference obtained for ${dbName}`);
 
     // Step 3: Test connection with ping
     status.steps.push("3. Testing connection with ping command...");
@@ -31,6 +32,8 @@ export default async function Home() {
       ? process.env.MONGODB_URI.replace(/\/\/([^:]+):([^@]+)@/, "//***:***@")
       : "Not found";
     status.steps.push(`5. Connection string: ${maskedUri}`);
+
+    console.log(`Using MongoDB URI: ${maskedUri}`);
 
     // Step 6: List collections
     status.steps.push("6. Fetching list of collections...");
