@@ -1,7 +1,6 @@
 "use client"; // Mark this component as a client component to use React hooks
 
 import { useState } from 'react'; // Import useState hook for managing component state
-import clientPromise from '@/utils/mongodb'; // Import MongoDB client promise for database connection
 
 export default async function Home() {
   // Initialize status object to track connection steps, errors, and collections
@@ -19,18 +18,17 @@ export default async function Home() {
   // Function to fetch content log based on the provided ID
   const handleFetchContent = async () => {
     try {
-      // Make a GET request to the API route to fetch content log by ID
-      const response = await fetch(`/api/content-log/${contentId}`); // Adjust the API endpoint as needed
+      const response = await fetch(`/api/content-log/${contentId}`); // Call the API route
       if (!response.ok) {
-        throw new Error('Content not found'); // Throw an error if the response is not OK
+        throw new Error('Content not found');
       }
-      const data = await response.json(); // Parse the response data as JSON
-      setContentLog(data); // Update the contentLog state with the fetched data
-      setError(''); // Clear any previous error messages
+      const data = await response.json();
+      setContentLog(data);
+      setError('');
     } catch (err: unknown) {
-      const error = err as Error; // Type assertion for error handling
-      setError(error.message); // Set the error message in state
-      setContentLog(null); // Clear the content log state
+      const error = err as Error; // Type assertion
+      setError(error.message);
+      setContentLog(null);
     }
   };
 
