@@ -37,12 +37,12 @@ export default function Home() {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        // Make a GET request to the API route to fetch the list of collections
-        const response = await fetch('/api/example'); // Update the API endpoint to /api/example
+        const response = await fetch('/api/example'); // Call the API route
         if (!response.ok) {
           throw new Error('Failed to fetch collections'); // Throw an error if the response is not OK
         }
         const data = await response.json(); // Parse the response data as JSON
+        console.log('Fetched collections:', data); // Log the fetched data to the console
         // Update the status state with the fetched collection names and log the successful fetch
         setStatus((prevStatus) => ({
           ...prevStatus,
