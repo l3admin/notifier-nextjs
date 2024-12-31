@@ -42,16 +42,6 @@ export default async function Home() {
     status.collections = collections.map(col => col.name);
     status.steps.push(`✅ Found ${status.collections.length} collections`);
 
-    // Step 7: Fetch last document from Source_Data collection
-    const collectionName = 'Source_Data';
-    const lastDocument = await db.collection(collectionName).find().sort({ _id: -1 }).limit(1).toArray();
-    if (lastDocument.length > 0) {
-      status.steps.push(`✅ Last document from ${collectionName} fetched successfully`);
-      status.steps.push(`Last Document: ${JSON.stringify(lastDocument[0], null, 2)}`);
-    } else {
-      status.steps.push(`⚠️ No documents found in ${collectionName}`);
-    }
-
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
         {/* Navigation Links */}
@@ -77,11 +67,6 @@ export default async function Home() {
               </div>
             ))}
           </div>
-          // The following section displays the MongoDB connection status steps
-          // and any errors that may have occurred during the connection process.
-          // Each step is mapped to a div for display, providing a clear
-          // overview of the connection process to the user.
-          // This helps in debugging and understanding the connection flow.
 
           {status.collections.length > 0 && (
             <div className="mt-6 border-t pt-4">
@@ -95,17 +80,6 @@ export default async function Home() {
               </ul>
             </div>
           )}
-        // This section is where we can add additional logic or components related to the MongoDB connection status.
-        // It serves as a placeholder for future enhancements, such as displaying more detailed information about the collections,
-        // or providing options for the user to interact with the data retrieved from the database.
-        {lastDocument.length > 0 && (
-          <div className="mt-6 border-t pt-4">
-            <h2 className="text-xl font-semibold mb-2">Last Document:</h2>
-            <pre className="bg-gray-100 p-4 rounded-lg">
-              {JSON.stringify(lastDocument[0], null, 2)}
-            </pre>
-          </div>
-        )}
         </div>
       </div>
     );
