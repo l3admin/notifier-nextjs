@@ -44,6 +44,18 @@ export default async function Home() {
 
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        {/* Navigation Links */}
+        <nav className="mb-4">
+          <ul className="flex space-x-4">
+            <li>
+              <a href="/search-results" className="text-blue-600 hover:underline">Search Results</a>
+            </li>
+            <li>
+              <a href="/source-content" className="text-blue-600 hover:underline">Source Content</a>
+            </li>
+          </ul>
+        </nav>
+
         <div className="max-w-2xl w-full space-y-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
           <h1 className="text-2xl font-bold text-green-600 mb-4">
             MongoDB Connection Status
