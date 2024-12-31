@@ -1,15 +1,14 @@
 "use client"; // Mark this component as a client component to use React hooks
 
 import { useState, useEffect } from 'react'; // Import useState and useEffect hooks
-import clientPromise from '@/utils/mongodb'; // Import MongoDB client promise for database connection
 
 export default function Home() {
   // Initialize status object to track connection steps, errors, and collections
-  const status = {
+  const [status, setStatus] = useState({
     steps: [] as string[], // Array to hold connection steps
     error: null as string | null, // Variable to hold any error messages
     collections: [] as string[] // Array to hold collection names
-  };
+  });
 
   // State variables for managing input and fetched content log
   const [contentId, setContentId] = useState(''); // State for the Content_Log ID input
@@ -37,24 +36,24 @@ export default function Home() {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        status.steps.push("1. Attempting to connect to MongoDB...");
-        const client = await clientPromise; // Await the MongoDB client promise
-        status.steps.push("✅ MongoDB client initialized successfully");
-
-        // Get database reference
-        const dbName = process.env.MONGODB_DB || "defaultDatabaseName"; // Fallback to a default if not set
-        const db = client.db(dbName); // Get the database reference
-        status.steps.push(`✅ Database reference obtained for ${dbName}`);
-
-        // Fetch the list of collections
-        const collections = await db.listCollections().toArray(); // Fetch the list of collections from the database
-        status.collections = collections.map(col => col.name); // Extract collection names
-        status.steps.push(`✅ Found ${status.collections.length} collections`); // Log the number of collections
+        const response = await fetch('/api/collections'); // Adjust the API endpoint as needed
+        if (!response.ok) {
+          throw new Error('Failed to fetch collections');
+        }
+        const data = await response.json();
+        setStatus((prevStatus) => ({
+          ...prevStatus,
+          collections: data,
+          steps: [...prevStatus.steps, `✅ Found ${data.length} collections`]
+        }));
       } catch (e) {
         const error = e as Error; // Type assertion for error handling
-        console.error('MongoDB connection error:', error); // Log the connection error
-        status.error = error.message; // Set the error message in status
-        status.steps.push(`❌ Error: ${error.message}`); // Log the error step
+        console.error('Error fetching collections:', error); // Log the connection error
+        setStatus((prevStatus) => ({
+          ...prevStatus,
+          error: error.message,
+          steps: [...prevStatus.steps, `❌ Error: ${error.message}`]
+        }));
       }
     };
 

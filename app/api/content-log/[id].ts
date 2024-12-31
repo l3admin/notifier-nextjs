@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const client = await clientPromise;
       const db = client.db(process.env.MONGODB_DB || "defaultDatabaseName");
 
-      const objectId = Array.isArray(id) ? id[0] : id;
+      const objectId = Array.isArray(id) ? id[0] : id; // Handle case where id is an array
       const contentLog = await db.collection('your_collection_name').findOne({ _id: new ObjectId(objectId) });
 
       if (!contentLog) {
@@ -21,7 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       res.status(200).json(contentLog);
     } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error', error: (error as Error).message });
+      const typedError = error as Error; // Assert the type of error
+      res.status(500).json({ message: 'Internal Server Error', error: typedError.message });
     }
   } else {
     res.setHeader('Allow', ['GET']);
