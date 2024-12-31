@@ -13,6 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const client = await clientPromise;
       const db = client.db(process.env.MONGODB_DB || "defaultDatabaseName");
 
+      if (Array.isArray(id)) {
+        id = id[0];
+      }
+
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid ID format' });
+      }
+
       const contentLog = await db.collection('Content_Log').findOne({ _id: new ObjectId(id) });
 
       if (!contentLog) {
