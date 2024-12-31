@@ -36,9 +36,9 @@ export default function Home() {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await fetch('/api/collections'); // Adjust the API endpoint as needed
+        const response = await fetch('/api/example'); // Update the API endpoint to /api/example
         if (!response.ok) {
-          throw new Error('Failed to fetch collections');
+          throw new Error('Failed to fetch collections'); // Throw an error if the response is not OK
         }
         const data = await response.json();
         setStatus((prevStatus) => ({
