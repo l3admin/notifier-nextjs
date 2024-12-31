@@ -41,10 +41,11 @@ export default function Home() {
           throw new Error('Failed to fetch collections'); // Throw an error if the response is not OK
         }
         const data = await response.json();
+        const collectionNames = data.collections || []; // Ensure collections is defined
         setStatus((prevStatus) => ({
           ...prevStatus,
-          collections: data,
-          steps: [...prevStatus.steps, `✅ Found ${data.length} collections`]
+          collections: collectionNames,
+          steps: [...prevStatus.steps, `✅ Found ${collectionNames.length} collections`]
         }));
       } catch (e) {
         const error = e as Error; // Type assertion for error handling
