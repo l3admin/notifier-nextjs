@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    query: { id },
+    query: { id: queryId },
     method,
   } = req;
 
@@ -12,6 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const client = await clientPromise;
       const db = client.db(process.env.MONGODB_DB || "defaultDatabaseName");
+
+      let id = queryId;
 
       if (Array.isArray(id)) {
         id = id[0];
@@ -26,11 +28,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!contentLog) {
         return res.status(404).json({ message: 'Content not found' });
       }
+
       res.status(200).json(contentLog);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('Error fetching content log:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      res.status(500).json({ message: 'Internal Server Error', error: errorMessage });
+      res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
   } else {
     res.setHeader('Allow', ['GET']);
