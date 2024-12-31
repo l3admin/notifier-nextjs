@@ -32,7 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(contentLog);
     } catch (error) {
       console.error('Error fetching content log:', error);
-      res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      const errorMessage = (error as Error).message;
+      res.status(500).json({ message: 'Internal Server Error', error: errorMessage });
     }
   } else {
     res.setHeader('Allow', ['GET']);
