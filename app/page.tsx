@@ -10,6 +10,7 @@ export default async function Home() {
   try {
     // Step 1: Initial connection attempt
     status.steps.push("1. Attempting to connect to MongoDB...");
+    console.log("Connecting to MongoDB with URI:", process.env.MONGODB_URI);
     const client = await clientPromise;
     status.steps.push("✅ MongoDB client initialized successfully");
 
@@ -73,6 +74,7 @@ export default async function Home() {
 
   } catch (e) {
     const error = e as Error;
+    console.error('MongoDB connection error:', error);
     status.error = error.message;
     status.steps.push(`❌ Error: ${error.message}`);
 
