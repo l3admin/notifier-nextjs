@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         id = id[0];
       }
 
-      if (!ObjectId.isValid(id)) {
+      if (!id || !ObjectId.isValid(id)) {
         return res.status(400).json({ message: 'Invalid ID format' });
       }
 
