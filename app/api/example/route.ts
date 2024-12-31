@@ -4,21 +4,19 @@ import clientPromise from '@/utils/mongodb';
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db("your_database_name");
+    const db = client.db("NotifierMongo");
 
     // Test the connection explicitly
     await db.command({ ping: 1 });
     
-    // Example: Fetch all items from a collection
-    const items = await db.collection("your_collection_name")
-      .find({})
-      .limit(10)
-      .toArray();
+    // Fetch all collection names
+    const collections = await db.listCollections().toArray();
+    const collectionNames = collections.map(collection => collection.name);
 
     return NextResponse.json({ 
       status: 'success',
       environment: process.env.NODE_ENV,
-      items 
+      collections: collectionNames
     });
   } catch (e) {
     const error = e as Error;
