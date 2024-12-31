@@ -17,13 +17,15 @@ export default function Home() {
 
   // Function to fetch content log based on the provided ID
   const handleFetchContent = async () => {
+    // Check if the contentId is empty
     if (!contentId) {
       setError('Content ID cannot be empty'); // Set error if contentId is empty
       return; // Exit the function early
     }
     
     try {
-      const response = await fetch(`/api/content-log/${contentId}`); // Call the API route
+      // Call the API route to fetch the content log by ID
+      const response = await fetch(`/api/content-log/${contentId}`); 
       if (!response.ok) {
         const errorMessage = await response.text(); // Get the error message from the response
         throw new Error(errorMessage || 'Content not found'); // Throw an error with the response message
