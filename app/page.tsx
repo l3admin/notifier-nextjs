@@ -16,7 +16,7 @@ export default async function Home() {
 
   const handleFetchContent = async () => {
     try {
-      const response = await fetch(`/api/content-log/${contentId}`); // Call the API route
+      const response = await fetch(`/api/content-log/${contentId}`); // Adjust the API endpoint as needed
       if (!response.ok) {
         throw new Error('Content not found');
       }
